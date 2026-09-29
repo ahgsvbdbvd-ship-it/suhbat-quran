@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>النقاط والمستويات — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}#ptsCards{display:grid;grid-template-columns:repeat(2,1fr);gap:0 12px}</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<header class="topbar"><div class="topbar-inner">
+  <a class="icon-btn" href="index.html" title="الرجوع للرئيسية">→</a>
+  <div class="brand"><span class="logo">🏆</span><span>النقاط والمستويات</span></div>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">🌓</button>
+</div></header>
+<main class="container">
+  <div class="card hero-card center">
+    <div style="font-size:46px" id="ptsLevelIcon">🌱</div>
+    <h2 style="margin:4px 0" id="ptsLevel">المستوى</h2>
+    <div class="stat-num" style="font-size:40px" id="ptsTotal">0</div>
+    <div class="muted" style="color:#eafff5">مجموع نقاطك في اليوم: <b id="ptsToday">0</b></div>
+    <div class="progress" style="background:rgba(255,255,255,.3);margin-top:8px"><span id="ptsBar" style="background:#ffe9a8"></span></div>
+    <p class="muted" style="color:#eafff5" id="ptsNext">المستوى التالي</p>
+  </div>
+  <div id="ptsCards"></div>
+  <div class="card"><h3>نقاط آخر 7 أيام</h3><div class="bar-chart" id="ptsChart"></div><div style="height:24px"></div></div>
+  <div class="card"><h3 style="margin-top:0">📖 كيف تُحسب النقاط؟</h3>
+    <div>📖 كل صفحة قرآن تقرؤها = <b>5 نقاط</b> (الاستماع للقرآن لا يمنح نقاطًا)</div>
+    <div>📿 كل تسبيحة = <b>3 نقاط</b> (مهما بلغ العدد — حتى فوق 33)</div>
+    <div>🌙 إتمام مجموعة أذكار كاملة (صباح/مساء/نوم) = <b>5 نقاط</b></div>
+    <div>🕌 كل صلاة مسجلة = <b>10 نقاط</b></div>
+    <p class="muted">تُحسب النقاط تلقائيًا من سجلاتك الحقيقية، والمستويات تشجيعية فقط.</p>
+  </div>
+  <div class="card center">
+    <a class="btn btn-ghost" href="salah.html">🕌 تسجيل الصلاة</a>
+    <a class="btn btn-ghost" href="stats.html">📊 إحصاءاتي</a>
+  </div>
+</main>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/points.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  var p=Points.compute();
+  document.getElementById("ptsTotal").textContent=p.total;
+  document.getElementById("ptsToday").textContent=p.today;
+  document.getElementById("ptsLevel").textContent=p.level.name;
+  document.getElementById("ptsLevelIcon").textContent=p.level.name.split(" ")[0];
+  document.getElementById("ptsBar").style.width=p.pct+"%";
+  document.getElementById("ptsNext").textContent=p.next?("المستوى التالي: "+p.next.name+" — باقي "+(p.next.at-p.total)+" نقطة"):"أعلى مستوى — بارك الله فيك 🤲";
+  var cards=[
+    ["📖",p.quran.pts,p.quran.pages+" صفحات"],
+    ["📿",p.tasbeeh.pts,p.tasbeeh.count+" تسبيحة"],
+    ["🌙",p.azkar.pts,p.azkar.sets+" مجموعات مكتملة"],
+    ["🕌",p.prayer.pts,p.prayer.count+" صلوات في "+p.prayerDays+" أيام كاملة"]
+  ];
+  document.getElementById("ptsCards").innerHTML=cards.map(function(c){
+    return '<div class="card center"><div style="font-size:26px">'+c[0]+'</div><div class="stat-num">'+c[1]+'</div><div class="muted">'+c[2]+"</div></div>";
+  }).join("");
+  var max=Math.max.apply(null,p.week.map(function(w){return w.pts;}).concat([1]));
+  document.getElementById("ptsChart").innerHTML=p.week.map(function(w){
+    return '<div class="bar" style="height:'+Math.max(4,Math.round(w.pts/max*100))+'px" title="'+w.pts+' نقطة"><small>'+w.label+"</small></div>";
+  }).join("");
+});
+</script>
+</body>
+</html>

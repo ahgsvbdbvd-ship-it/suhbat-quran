@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>أشكال السبحة — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<header class="topbar"><div class="topbar-inner">
+  <a class="icon-btn" href="index.html" title="الرجوع للرئيسية">→</a>
+  <a class="icon-btn" href="tasbeeh.html" title="الرجوع للتسبيح">📿</a>
+  <div class="brand"><span class="logo">📿</span><span>أشكال السبحة</span></div>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">🌓</button>
+</div></header>
+<main class="container" style="max-width:600px">
+  <div class="card center frame-gold"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <h2 id="sibhaName" style="margin:4px 0">السبحة</h2>
+    <p class="muted" id="sibhaDhikrLbl" style="font-weight:800"></p>
+    <div class="tasbeeh-count" id="sibhaCount">0</div>
+    <div class="progress gold"><span id="sibhaBar"></span></div>
+    <p class="muted" id="sibhaLabel">0 / 33</p>
+    <p class="muted" id="sibhaRounds" style="font-weight:800">🔄 الجولات: 0</p>
+    <div id="sibhaSvg" style="margin:6px auto;max-width:300px"></div>
+    <p class="muted" id="tapHint">المس الخرز أو الزر للتسبيح 📿</p>
+    <div class="center" style="margin:10px 0"><button class="tasbeeh-btn" id="sibhaTap">سبّح 📿</button></div>
+    <div id="sibhaDone" class="card" style="display:none;border-color:var(--gold)"></div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="chip-btn" id="sibhaBack">تراجع</button>
+      <button class="chip-btn" id="sibhaReset">إعادة</button>
+      <button class="chip-btn on" id="sibhaSave">💾 حفظ</button>
+      <button class="chip-btn" id="sibhaToggleBtn">👁️ إخفاء الزر</button>
+    </div>
+    <div style="height:8px"></div>
+    <button class="btn btn-ghost btn-block" id="sibhaFullReset">🔄 إعادة صفحة التسبيح من البداية</button>
+  </div>
+  <div class="card"><h3 style="margin-top:0">📿 ذكر السبحة</h3><div id="sibhaDhikr" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
+  <div class="card"><h3 style="margin-top:0">🎯 العدد المختار — الخرز يتفاعل معه</h3><div id="sibhaGoals" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    <p class="muted">اختر عدد التسبيحات، وستضيء حبات السبحة تدريجيًا كلما اقتربت من هدفك، وعند إتمامه تبدأ جولة جديدة من الصفر 📿</p></div>
+  <h3>📿 مجموعتي — اختر سبحتك</h3>
+  <div class="sibha-grid" id="sibhaGrid"></div>
+  <h3 class="mt">📜 آخر جولات السبحة</h3>
+  <div id="sibhaHistory"></div>
+  <div class="center mt"><a class="btn btn-ghost" href="tasbeeh.html">📿 العودة لعدّاد التسبيح</a></div>
+</main>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="js/sibha.js"></script>
+</body>
+</html>

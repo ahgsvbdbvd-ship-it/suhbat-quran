@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>الأذكار — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}#azkarTabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.tabs{display:grid!important}</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<header class="topbar"><div class="topbar-inner">
+  <a class="icon-btn" href="index.html" title="الرجوع للرئيسية">→</a>
+  <div class="brand"><span class="logo">🌙</span><span>الأذكار</span></div>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">🌓</button>
+</div></header>
+<main class="container">
+  <input id="azkarSearch" placeholder="🔍 ابحث في الأذكار…">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0" id="azkarTitle">الأذكار</h3>
+      <b id="azkarProgLbl">0 / 0</b>
+    </div>
+    <div class="progress mt"><span id="azkarProgBar"></span></div>
+  </div>
+  <div class="tabs" id="azkarTabs"></div>
+  <div id="azkarList"></div>
+  <p class="muted center">المصدر: حصن المسلم — تُعرض المصادر الموثوقة تحت كل ذكر.</p>
+</main>
+<script src="js/storage.js"></script>`n<script src="js/firebase-config.js"></script>`n<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+<script src="data/azkar-data.js"></script>
+<script src="js/azkar.js"></script>
+</body>
+</html>
+
+

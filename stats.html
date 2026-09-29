@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>إحصاءاتي — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}#statCards{display:grid;grid-template-columns:repeat(2,1fr);gap:0 12px}</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<header class="topbar"><div class="topbar-inner">
+  <a class="icon-btn" href="index.html" title="الرجوع للرئيسية">→</a>
+  <div class="brand"><span class="logo">📊</span><span>إحصاءاتي</span></div>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">🌓</button>
+</div></header>
+<main class="container">
+  <div id="statCards"></div>
+  <div class="card"><h3>صفحات آخر 7 أيام</h3><div class="bar-chart" id="weekChart"></div><div style="height:24px"></div></div>
+  <div class="card"><h3 style="margin-top:0">🎯 ورد اليوم</h3>
+    <p style="font-weight:800" id="stWird">0 / 5 صفحات</p>
+    <div class="progress"><span id="stWirdBar"></span></div>
+  </div>
+  <div class="card center"><a class="btn btn-ghost" href="family.html">🌟 إنجازات العائلة</a>
+  <a class="btn btn-ghost" href="calendar.html">📅 التقويم</a></div>
+</main>
+<script src="js/storage.js"></script>`n<script src="js/firebase-config.js"></script>`n<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+<script src="js/stats.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  var s=Stats.compute();
+  var cards=[
+    ["📖",s.pages,"إجمالي الصفحات المقروءة"],
+    ["⏱️",App.fmtDurLong(s.readSecs),"إجمالي وقت القراءة والذكر"],
+    ["📿",s.tasbeeh,"إجمالي التسبيح"],
+    ["🌙",s.azkarDone,"الأذكار المكتملة"],
+    ["📅",s.activeDays,"عدد أيام النشاط"],
+    ["🔥",s.streak,"أيام الاستمرار"],
+    ["📜",App.esc(s.lastSurah||"—"),"آخر سورة تمت قراءتها"]
+  ];
+  document.getElementById("statCards").innerHTML=cards.map(function(c){
+    return '<div class="card center"><div style="font-size:26px">'+c[0]+'</div><div class="stat-num">'+c[1]+'</div><div class="muted">'+c[2]+"</div></div>";
+  }).join("");
+  var week=Stats.last7Days(),max=Math.max.apply(null,week.map(function(w){return w.pages;}).concat([1]));
+  document.getElementById("weekChart").innerHTML=week.map(function(w){
+    return '<div class="bar" style="height:'+Math.max(4,Math.round(w.pages/max*100))+'px" title="'+w.pages+' صفحات"><small>'+w.label+"</small></div>";
+  }).join("");
+  var w=Store.touchWird();
+  document.getElementById("stWird").textContent=w.done+" / "+w.goal+" صفحات";
+  document.getElementById("stWirdBar").style.width=(w.goal?Math.min(100,Math.round(w.done/w.goal*100)):0)+"%";
+});
+</script>
+</body>
+</html>
+
+

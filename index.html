@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<meta name="description" content="صحبة القرآن — مساحة عائلية تجمعنا على كتاب الله والذكر والعمل الصالح.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icons/icon.svg">
+<title>صحبة القرآن — صحبتك على القرآن والذكر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}h1.ruqaa{font-family:"Aref Ruqaa",serif}</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<!-- ===== شاشة البداية ===== -->
+<section id="splash" class="splash pattern-bg" style="display:none">
+  <div class="crescent">🌙</div>
+  <h1 class="ruqaa">صحبة القرآن</h1>
+  <div class="sub">صحبتك على القرآن والذكر</div>
+  <p class="muted" style="max-width:420px">مساحة عائلية تجمعنا على كتاب الله والذكر والعمل الصالح.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1">
+    <button class="btn btn-primary" id="startBtn">ابدأ الآن</button>
+    <button class="btn btn-ghost" id="resumeBtn">متابعة القراءة</button>
+  </div>
+  <div class="ornament-divider" style="width:100%;max-width:420px;position:relative;z-index:1"><span>✦</span></div>
+  <small class="muted" style="position:relative;z-index:1">يعمل دون اتصال • بدون حساب • بياناتك على جهازك</small>
+</section>
+
+<!-- ===== تسجيل الدخول ===== -->
+<section id="login" class="container" style="display:none;max-width:480px">
+  <div class="card frame-gold center"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <div class="seal">📖</div>
+    <h2>اكتب اسمك</h2>
+    <p class="muted">ادخل باسمك — وإن كان حسابك محميًا أدخل كلمة المرور.</p>
+    <label for="nameInput" style="text-align:right">الاسم</label>
+    <input id="nameInput" placeholder="مثال: أحمد" maxlength="30" autocomplete="username">
+    <label for="namePass" style="text-align:right">كلمة المرور (إن وُجدت — وتُنشأ مع الاسم لأول مرة)</label>
+    <input id="namePass" type="password" placeholder="••••" maxlength="30" autocomplete="current-password">
+    <div style="height:12px"></div>
+    <button class="btn btn-primary btn-block" id="enterBtn">الدخول إلى التطبيق</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-ghost btn-block" id="backBtn">رجوع</button>
+  </div>
+</section>
+
+<!-- ===== عودة مستخدم ===== -->
+<section id="welcomeBack" class="container" style="display:none;max-width:480px">
+  <div class="card center frame-gold"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <div class="seal">👋</div>
+    <h2 id="wbHello">مرحبًا بعودتك</h2>
+    <button class="btn btn-primary btn-block" id="wbGo">متابعة</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-ghost btn-block" id="wbChange">تغيير الاسم</button>
+  </div>
+  <div class="card"><h3 style="margin-top:0">أو الدخول باسم آخر</h3>
+    <div id="usersList"></div>
+  </div>
+</section>
+
+<!-- ===== الرئيسية ===== -->
+<div id="dash" style="display:none">
+<header class="topbar"><div class="topbar-inner">
+  <div class="brand"><span class="logo">📖</span><span>صحبة القرآن</span></div>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">🌓</button>
+  <a class="icon-btn" href="settings.html" title="الإعدادات">⚙️</a>
+</div></header>
+<main class="container">
+  <p style="margin:4px 0 0">السلام عليكم ورحمة الله وبركاته 👋</p>
+  <h2 style="margin:0 0 6px">مرحبًا بك، <span id="helloName"></span></h2>
+
+  <div class="card hero-card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">🎯 وردك اليوم</h3>
+      <button class="chip-btn" id="wirdGoalBtn" style="border-color:#fff;color:#fff">تغيير الهدف</button>
+    </div>
+    <p style="font-size:22px;font-weight:800;margin:6px 0" id="wirdLbl">0 / 5 صفحات</p>
+    <div class="progress" style="background:rgba(255,255,255,.3)"><span id="wirdBar" style="background:#ffe9a8"></span></div>
+    <p class="muted" id="wirdPct" style="color:#eafff5">0٪</p>
+  </div>
+
+  <a class="card hero-card" href="points.html" style="display:block">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">🏆 نقاطك</h3>
+      <b id="dashLevel" style="font-size:14px">🌱</b>
+    </div>
+    <p style="font-size:26px;font-weight:800;margin:6px 0"><span id="dashPoints">0</span> نقطة <small style="font-size:13px;font-weight:400">في اليوم <span id="dashPointsToday">0</span></small></p>
+    <div class="progress" style="background:rgba(255,255,255,.3)"><span id="dashPointsBar" style="background:#ffe9a8"></span></div>
+  </a>
+
+  <div class="card" id="lastPosCard" style="display:none">
+    <h3 style="margin:0 0 4px">📖 أكمل من حيث توقفت</h3>
+    <p id="lastPosTxt" style="margin:4px 0 10px"></p>
+    <button class="btn btn-primary btn-block" id="lastPosGo">متابعة القراءة</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">⏱️ جلسة اليوم</h3><span class="timer" id="dashTimer">00:00</span>
+    </div>
+    <p class="muted" id="dashStatsLine" style="margin:6px 0 0"></p>
+  </div>
+
+  <h3>أقسام التطبيق</h3>
+  <div class="menu-grid">
+    <a class="menu-item" href="quran.html"><span class="ico">📖</span><b>القرآن الكريم</b></a>
+    <a class="menu-item" href="tasbeeh.html"><span class="ico">📿</span><b>التسبيح</b></a>
+    <a class="menu-item" href="azkar.html"><span class="ico">🌙</span><b>الأذكار</b></a>
+    <a class="menu-item" href="family.html"><span class="ico">👨‍👩‍👧‍👦</span><b>نشاط العائلة</b></a>
+    <a class="menu-item" href="stats.html"><span class="ico">📊</span><b>إحصاءاتي</b></a>
+    <a class="menu-item" href="favorites.html"><span class="ico">⭐</span><b>المفضلة</b></a>
+  </div>
+  <div class="menu-grid" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
+    <a class="menu-item" href="mushaf.html"><span class="ico">📖</span><b>المصحف</b></a>
+    <a class="menu-item" href="calendar.html"><span class="ico">📅</span><b>التقويم</b></a>
+    <a class="menu-item" href="settings.html"><span class="ico">⚙️</span><b>الإعدادات</b></a>
+  </div>
+  <div class="menu-grid" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
+    <a class="menu-item" href="salah.html"><span class="ico">🕌</span><b>الصلاة</b></a>
+    <a class="menu-item" href="points.html"><span class="ico">🏆</span><b>النقاط</b></a>
+    <a class="menu-item" href="sibha.html"><span class="ico">📿</span><b>السبحة</b></a>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">🔍 بحث سريع</h3>
+    <input id="quickSearch" placeholder="ابحث عن سورة… (مثال: البقرة)">
+    <div id="quickResults"></div>
+  </div>
+
+  <div class="center mt"><button class="btn btn-ghost" data-install style="display:none">📲 تثبيت التطبيق</button></div>
+  <p class="muted center">نص القرآن: Tanzil (الرسم العثماني) • الأذكار: حصن المسلم</p>
+</main>
+</div>
+
+<script src="js/storage.js"></script>`n<script src="js/firebase-config.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+<script src="data/quran-data.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/points.js"></script>
+<script>
+(function(){
+  "use strict";
+  function show(id){
+    ["splash","login","welcomeBack"].forEach(function(x){
+      document.getElementById(x).style.display = x===id ? "" : "none";
+    });
+    document.getElementById("dash").style.display = id==="dash" ? "" : "none";
+    window.scrollTo(0,0);
+  }
+  function enter(name){
+    name=(name||"").trim();
+    if(!name){App.toast("اكتب اسمك أولًا");return;}
+    var pass=document.getElementById("namePass").value;
+    var ex=Store.findUser(name);
+    if(ex && ex.passHash){
+      if(!Store.verifyPass(name,pass)){App.toast("كلمة المرور غير صحيحة — هذا الحساب محمي 🔒");return;}
+      Store.loginAs(ex);
+      document.getElementById("namePass").value="";
+      openDash();return;
+    }
+    if(ex){Store.loginAs(ex);openDash();return;}
+    Store.createUser(name,pass);
+    Store.logActivity({kind:"join",icon:"👋",text:"انضم إلى صحبة القرآن",force:true});
+    if(pass)App.toast("تم إنشاء حسابك محميًا بكلمة مرور 🔒");
+    else App.toast("تم إنشاء حسابك — يمكنك إضافة قفل من الإعدادات");
+    document.getElementById("namePass").value="";
+    openDash();
+  }
+  function prefillLogin(name){
+    show("login");
+    document.getElementById("nameInput").value=name;
+    document.getElementById("namePass").value="";
+    document.getElementById("namePass").focus();
+  }
+  function openDash(){
+    var u=Store.currentUser();
+    if(!u){show("splash");return;}
+    show("dash");
+    document.getElementById("helloName").textContent=u.name;
+    renderWird();renderLastPos();renderDashStats();
+    try {
+      var _ps = Points.compute();
+      document.getElementById("dashPoints").textContent = _ps.total;
+      document.getElementById("dashPointsToday").textContent = _ps.today;
+      document.getElementById("dashLevel").textContent = _ps.level.name;
+      document.getElementById("dashPointsBar").style.width = _ps.pct + "%";
+    } catch (e) {}
+  }
+  function renderWird(){
+    var w=Store.touchWird();
+    document.getElementById("wirdLbl").textContent=w.done+" / "+w.goal+" صفحات";
+    var pct=w.goal?Math.min(100,Math.round(w.done/w.goal*100)):0;
+    document.getElementById("wirdBar").style.width=pct+"%";
+    document.getElementById("wirdPct").textContent=pct+"٪ — "+(pct>=100?"أتممت وردك. بارك الله فيك 🤲":"واصل، فتح الله عليك");
+  }
+  function renderLastPos(){
+    var lp=Store.lastPos(),card=document.getElementById("lastPosCard");
+    if(!lp){card.style.display="none";return;}
+    card.style.display="";
+    var txt=lp.kind==="page"?("سورة "+(lp.surahName||"")+" — الصفحة "+lp.page):("سورة "+(lp.surahName||lp.surah));
+    document.getElementById("lastPosTxt").textContent=txt;
+    document.getElementById("lastPosGo").onclick=function(){
+      location.href=lp.kind==="page"?("mushaf.html?page="+(lp.page||1)):("surah.html?n="+(lp.surah||1));
+    };
+  }
+  function renderDashStats(){
+    var s=Stats.compute();
+    document.getElementById("dashStatsLine").textContent=
+      "📖 "+s.pages+" صفحات • 📿 "+s.tasbeeh+" تسبيحة • 🌙 "+s.azkarDone+" ذكر • 🔥 "+s.streak+" يوم استمرار";
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    var u=Store.currentUser();
+    var users=Store.allUsers();
+    if(u){ // دخول مباشر مع إظهار ترحيب سريع وفتح الرئيسية
+      openDash();
+    } else if(users.length){ show("welcomeBack");
+      var last=users[users.length-1];
+      document.getElementById("wbHello").textContent="مرحبًا بعودتك يا "+last.name;
+      document.getElementById("wbGo").onclick=function(){
+        if(last.passHash){prefillLogin(last.name);App.toast("حسابك محمي — أدخل كلمة المرور 🔒");}
+        else{Store.loginAs(last);openDash();}
+      };
+      document.getElementById("usersList").innerHTML=users.map(function(x){
+        return '<button class="list-row" data-id="'+x.id+'" style="width:100%;cursor:pointer;font-family:inherit"><span class="num">'+(x.passHash?"🔒":"👤")+'</span><b>'+App.esc(x.name)+"</b></button>";
+      }).join("");
+      document.querySelectorAll("#usersList button").forEach(function(b){
+        b.addEventListener("click",function(){
+          var found=users.find(function(x){return x.id===b.dataset.id;});
+          if(found.passHash){prefillLogin(found.name);App.toast("حساب محمي — أدخل كلمة المرور 🔒");}
+          else{Store.loginAs(found);openDash();}
+        });
+      });
+    } else show("splash");
+    document.getElementById("startBtn").addEventListener("click",function(){show("login");});
+    document.getElementById("resumeBtn").addEventListener("click",function(){
+      var lp=Store.lastPos();
+      if(!lp||!Store.currentUser()){show(users.length?"welcomeBack":"login");return;}
+      openDash();
+      document.getElementById("lastPosCard").scrollIntoView({behavior:"smooth"});
+    });
+    document.getElementById("backBtn").addEventListener("click",function(){show("splash");});
+    document.getElementById("enterBtn").addEventListener("click",function(){
+      enter(document.getElementById("nameInput").value);
+    });
+    document.getElementById("nameInput").addEventListener("keydown",function(e){
+      if(e.key==="Enter")enter(e.target.value);
+    });
+    document.getElementById("namePass").addEventListener("keydown",function(e){
+      if(e.key==="Enter")enter(document.getElementById("nameInput").value);
+    });
+    document.getElementById("wbChange").addEventListener("click",function(){show("login");});
+    document.getElementById("wirdGoalBtn").addEventListener("click",function(){
+      App.sheet([
+        {icon:"📖",label:"صفحة واحدة",href:"index.html#wird"},
+        {icon:"📖",label:"3 صفحات",href:"index.html#wird"},
+        {icon:"📖",label:"5 صفحات",href:"index.html#wird"},
+        {icon:"📖",label:"10 صفحات",href:"index.html#wird"},
+        {icon:"📖",label:"20 صفحة (جزء)",href:"index.html#wird"}
+      ]);
+      setTimeout(function(){
+        document.querySelectorAll("#appSheet a").forEach(function(a){
+          a.addEventListener("click",function(e){
+            e.preventDefault();
+            var m=a.textContent.match(/(\d+)/);var g=m?+m[1]:5;
+            var w=Store.touchWird();w.goal=g;Store.saveWird(w);
+            var s=Store.settings();s.wirdGoal=g;Store.saveSettings(s);
+            document.getElementById("appSheet").remove();renderWird();
+            App.toast("هدف الورد: "+g+" صفحات ✓");
+          });
+        });
+      },50);
+    });
+    // بحث سريع في السور
+    var qs=document.getElementById("quickSearch");
+    qs.addEventListener("input",function(){
+      var q=qs.value.trim(),box=document.getElementById("quickResults");
+      if(!q){box.innerHTML="";return;}
+      var res=window.SURAHS.filter(function(s){return s.name.indexOf(q)!==-1;}).slice(0,6);
+      box.innerHTML=res.length?res.map(function(s){
+        return '<a class="list-row" href="surah.html?n='+s.n+'"><span class="num">'+s.n+'</span><div style="flex:1"><b>سورة '+App.esc(s.name)+'</b><div class="muted">'+s.ayahs+' آيات • '+s.type+'</div></div><span>←</span></a>';
+      }).join(""):'<div class="empty">لا توجد نتائج.</div>';
+    });
+    if(location.hash==="#wird"){
+      setTimeout(function(){document.getElementById("wirdLbl").scrollIntoView({behavior:"smooth",block:"center"});},300);
+    }
+  });
+})();
+</script>
+</body>
+</html>
+

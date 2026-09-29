@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>الإعدادات — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<header class="topbar"><div class="topbar-inner">
+  <a class="icon-btn" href="index.html" title="الرجوع للرئيسية">→</a>
+  <div class="brand"><span class="logo">⚙️</span><span>الإعدادات</span></div>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="themeToggle" title="الوضع الليلي/النهاري">🌓</button>
+</div></header>
+<main class="container">
+  <div class="card"><h3 style="margin-top:0">👤 الحساب المحلي</h3>
+    <label for="setName">اسم المستخدم</label>
+    <input id="setName" maxlength="30">
+    <div style="height:8px"></div>
+    <button class="btn btn-primary" id="saveProfile">حفظ الاسم</button>
+    <button class="btn btn-ghost" id="logoutBtn">تسجيل الخروج</button>
+  </div>
+  <div class="card"><h3 style="margin-top:0">🔒 كلمة مرور حسابي</h3>
+    <p class="muted" id="passStatus"></p>
+    <label for="setPass">كلمة مرور جديدة (4 أحرف على الأقل — اتركها فارغة لإزالة القفل)</label>
+    <input id="setPass" type="password" maxlength="30" autocomplete="new-password">
+    <div style="height:8px"></div>
+    <button class="btn btn-primary btn-block" id="savePass">حفظ كلمة المرور</button>
+    <p class="muted">بها لا يستطيع أحد من العائلة الدخول باسمك أو التسجيل في حسابك من هذا الجهاز.</p>
+  </div>
+  <div class="card"><h3 style="margin-top:0">📖 القراءة</h3>
+    <label>حجم الخط: <b id="setFontVal">24px</b></label>
+    <input type="range" id="setFont" min="16" max="44" step="1">
+    <label for="setGap">المسافة بين الأسطر</label>
+    <select id="setGap"><option value="1.8">ضيقة</option><option value="2.2">متوسطة</option><option value="2.6">واسعة</option></select>
+    <label for="setView">طريقة عرض القرآن</label>
+    <select id="setView"><option value="ayah">عرض الآيات</option><option value="mushaf">عرض المصحف</option><option value="comfort">وضع القراءة المريح</option><option value="night">الوضع الليلي</option></select>
+    <label>هدف الورد اليومي (صفحات)</label>
+    <div style="display:flex;gap:8px">
+      <select id="setWird" style="flex:1"><option value="1">صفحة واحدة</option><option value="3">3 صفحات</option><option value="5">5 صفحات</option><option value="10">10 صفحات</option><option value="20">20 صفحة (جزء)</option></select>
+      <input id="setWirdCustom" type="number" min="1" max="604" placeholder="مخصص" style="flex:1">
+    </div>
+    <div style="height:8px"></div>
+    <button class="btn btn-primary btn-block" id="saveWird">حفظ الهدف</button>
+    <div style="height:10px"></div>
+    <div id="lastPosBox" class="muted"></div>
+    <button class="btn btn-ghost" id="clearPos">مسح آخر موضع</button>
+  </div>
+  <div class="card"><h3 style="margin-top:0">🎨 المظهر</h3>
+    <label style="display:flex;gap:8px;align-items:center"><input type="radio" name="theme" value="light" style="width:auto"> فاتح</label>
+    <label style="display:flex;gap:8px;align-items:center"><input type="radio" name="theme" value="dark" style="width:auto"> داكن</label>
+    <label style="display:flex;gap:8px;align-items:center"><input type="radio" name="theme" value="system" style="width:auto"> حسب النظام</label>
+  </div>
+  <div class="card"><h3 style="margin-top:0">🔒 الخصوصية</h3>
+    <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="setShare" style="width:22px;height:22px"> مشاركة نشاطي مع العائلة</label>
+    <p class="muted">عند الإيقاف لن يظهر نشاطك الجديد في صفحة النشاط.</p>
+  </div>
+  <div class="card"><h3 style="margin-top:0">🔔 تنبيهات الصلاة (بتوقيت القاهرة)</h3>
+    <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ntEnable" style="width:22px;height:22px"> تفعيل التنبيه اليومي التلقائي للصلوات الخمس</label>
+    <label for="ntBefore">التنبيه قبل الأذان بـ</label>
+    <select id="ntBefore"><option value="0">وقت الأذان تمامًا</option><option value="5">5 دقائق</option><option value="10">10 دقائق</option><option value="15">15 دقيقة</option><option value="30">30 دقيقة</option></select>
+    <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ntSound" style="width:22px;height:22px"> صوت التنبيه</label>
+    <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ntAdhan" style="width:22px;height:22px"> تشغيل الأذان الصوتي تلقائيًا عند دخول الوقت</label>
+    <label for="ntMuezzin">صوت المؤذن</label>
+    <select id="ntMuezzin"></select>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn btn-ghost" style="flex:1" id="ntAdhanPreview">▶ استمع للأذان</button>
+      <button class="btn btn-ghost" style="flex:1" id="ntAdhanStop">⏹ إيقاف</button>
+    </div>
+    <p class="muted">استمع للأصوات واختر مؤذنك المفضل — سيؤذن تلقائيًا عند كل صلاة بتوقيت القاهرة.</p>
+    <div style="height:8px"></div>
+    <button class="btn btn-ghost btn-block" id="ntTest">🔔 تجربة التنبيه الآن</button>
+    <p class="muted" id="ntStatus"></p>
+    <p class="muted">يعمل تلقائيًا كل يوم بتوقيت القاهرة (Africa/Cairo) — إشعار + صوت + اهتزاز، مرة واحدة لكل صلاة. اسمح للإشعارات عند التفعيل لتصلك خارج الصفحة.</p>
+  </div>
+  <div class="card"><h3 style="margin-top:0">💾 البيانات</h3>
+    <button class="btn btn-primary btn-block" id="exportBtn">⬇ تصدير البيانات (JSON)</button>
+    <div style="height:8px"></div>
+    <label for="importFile">استيراد البيانات</label>
+    <input type="file" id="importFile" accept="application/json">
+    <div style="height:8px"></div>
+    <button class="btn btn-danger btn-block" id="wipeBtn">🗑️ حذف البيانات</button>
+    <div style="height:8px"></div>
+    <a class="btn btn-ghost btn-block" href="family.html">👨‍👩‍👧‍👦 نشاط العائلة</a>
+    <div style="height:8px"></div>
+    <a class="btn btn-primary btn-block" href="notifications.html">🔔 إعدادات الإشعارات</a>
+    <div style="height:8px"></div>
+    <button class="btn btn-ghost btn-block" data-install style="display:none">📲 تثبيت التطبيق</button>
+  </div>
+</main>
+<div class="modal-back" id="confirmBack"><div class="modal center">
+  <h3>هل أنت متأكد؟</h3>
+  <p class="muted">سيتم حذف بيانات التطبيق المحلية من هذا الجهاز.</p>
+  <button class="btn btn-danger btn-block" id="wipeConfirm">نعم، احذف كل شيء</button>
+  <div style="height:8px"></div>
+  <button class="btn btn-ghost btn-block" id="wipeCancel">تراجع</button>
+</div></div>
+<script src="js/storage.js"></script>`n<script src="js/firebase-config.js"></script>`n<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+<script src="data/audio-data.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>
+
+

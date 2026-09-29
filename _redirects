@@ -1,0 +1,35 @@
+# Cloudflare Pages - مسارات نظيفة (بدون .html)
+# الصفحات الرئيسية
+/    /index.html    200
+/quran    /Quran.html    200
+/mushaf    /mushaf.html    200
+/azkar    /azkar.html    200
+/tasbeeh    /tasbeeh.html    200
+/family    /family.html    200
+/settings    /settings.html    200
+/stats    /stats.html    200
+/favorites    /favorites.html    200
+/listen    /listen.html    200
+/salah    /salah.html    200
+/points    /points.html    200
+/calendar    /calendar.html    200
+/notifications    /notifications.html    200
+/chat    /chat.html    200
+/reels    /reels.html    200
+/sibha    /sibha.html    200
+
+# مسارات مع معاملات (Query Parameters)
+/surah/:n    /surah.html?n=:n    200
+/mushaf/page/:page    /mushaf.html?page=:page    200
+/listen/surah/:n    /listen.html?n=:n    200
+
+# الملفات الثابتة (CSS, JS, images, manifest)
+/assets/*    /assets/:splat    200
+/css/*    /css/:splat    200
+/js/*    /js/:splat    200
+/data/*    /data/:splat    200
+/manifest.json    /manifest.json    200
+/service-worker.js    /service-worker.js    200
+
+# الباقي كما هو
+/*    /:splat    200

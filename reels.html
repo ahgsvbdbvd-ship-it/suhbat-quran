@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>الريلز — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}
+body{background:#0b1512;color:#eef5f1}
+.reels-container{height:100dvh;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch}
+.reels-container::-webkit-scrollbar{display:none}
+.reel{min-height:100dvh;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 16px 100px;position:relative;overflow:hidden}
+.reel-bg{position:absolute;inset:0;z-index:0;opacity:.15}
+.reel-content{position:relative;z-index:1;text-align:center;max-width:500px;width:100%}
+.reel-icon{font-size:64px;margin-bottom:16px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4))}
+.reel-text{font-family:"Amiri Quran",serif;font-size:28px;line-height:2.2;color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.5);margin-bottom:12px;padding:0 8px}
+.reel-source{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:20px}
+.reel-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.reel-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.1);backdrop-filter:blur(12px);color:#fff;border-radius:99px;
+  padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s}
+.reel-btn:active{transform:scale(.95)}
+.reel-btn.play{background:linear-gradient(135deg,#17b57f,#064e3b);border-color:transparent}
+.reel-btn.fav{background:rgba(201,162,75,.2);border-color:rgba(201,162,75,.4)}
+.reel-btn.fav.on{background:linear-gradient(135deg,#c9a24b,#a37f2c);color:#3a2c07}
+.reel-num{position:absolute;top:20px;right:20px;font-size:12px;color:rgba(255,255,255,.5);
+  background:rgba(0,0,0,.3);border-radius:99px;padding:4px 12px;backdrop-filter:blur(8px)}
+.reel-nav{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:50;
+  display:flex;gap:8px;align-items:center;background:rgba(0,0,0,.4);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:6px 16px}
+.reel-nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:700;opacity:.7;transition:.2s}
+.reel-nav a.active{opacity:1;color:#c9a24b}
+.reel-nav .sep{opacity:.3}
+.gradient-1{background:linear-gradient(160deg,#064e3b,#0d7a5f,#149a77)}
+.gradient-2{background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460)}
+.gradient-3{background:linear-gradient(160deg,#2d1b4e,#4a1942,#6b2154)}
+.gradient-4{background:linear-gradient(160deg,#1b2838,#2a4a5e,#3d6b7a)}
+.gradient-5{background:linear-gradient(160deg,#3d1f00,#6b3a1a,#8b5e3c)}
+.gradient-6{background:linear-gradient(160deg,#0d1b2a,#1b2838,#2a4a5e)}
+.gradient-7{background:linear-gradient(160deg,#1a0a2e,#2d1b4e,#4a2c6a)}
+.gradient-8{background:linear-gradient(160deg,#0a1628,#162447,#1f4068)}
+</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<div class="reels-container" id="reelsContainer"></div>
+<nav class="reel-nav">
+  <a href="index.html">الرئيسية</a><span class="sep">|</span>
+  <a href="quran.html">القرآن</a><span class="sep">|</span>
+  <a href="azkar.html">الأذكار</a><span class="sep">|</span>
+  <a href="listen.html">استماع</a><span class="sep">|</span>
+  <a href="family.html">العائلة</a>
+</nav>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+<script src="data/quran-data.js"></script>
+<script src="data/azkar-data.js"></script>
+<script src="data/audio-data.js"></script>
+<script src="js/reels.js"></script>
+</body>
+</html>

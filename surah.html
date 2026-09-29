@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="js/theme-boot.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#064e3b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<title>قارئ القرآن — صحبة القرآن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/islamic.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>
+  body{font-family:"Cairo","Tajawal",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Kufi Arabic",Arial,sans-serif}
+  .quran-text{font-family:"Amiri Quran","Scheherazade New","Noto Nastaliq Urdu",serif;text-align:right;direction:rtl;font-feature-settings:"liga" 1,"calt" 1,"kern" 1;}
+  .basmala{font-family:"Amiri Quran",serif;font-size:1.3em;text-align:center;margin:1rem 0;color:#c9a24b;font-weight:400}
+  .ayah-num{font-family:"Amiri Quran",serif;font-size:0.9em;vertical-align:super;margin-right:4px;color:#c9a24b}
+</style>
+</head>
+<body><div id="appPreloader"><div class="pre-logo">📖</div><div class="pre-text">صحبة القرآن</div><div class="pre-bar"><span></span></div></div>
+<header class="topbar"><div class="topbar-inner">
+  <a class="icon-btn" href="index.html" title="الرجوع للرئيسية">→</a>
+  <a class="icon-btn" href="quran.html" title="الرجوع لقائمة السور">📖</a>
+  <div class="brand"><span class="logo">📖</span><span id="surahTitle">سورة</span></div>
+  <span class="spacer"></span>
+  <span class="timer" id="readTimer">00:00</span>
+</div></header>
+<main class="container">
+  <div class="card">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <button class="chip-btn" id="fontInc">تكبير الخط +</button>
+      <button class="chip-btn" id="fontDec">تصغير الخط −</button>
+      <button class="chip-btn" id="gapToggle">تباعد الأسطر</button>
+      <button class="chip-btn" id="nightToggle">🌓 ليلي/نهاري</button>
+      <select id="viewModeSel" style="width:auto;flex:1;min-width:140px" title="طريقة عرض القرآن">
+        <option value="ayah">عرض الآيات</option>
+        <option value="mushaf">عرض المصحف</option>
+        <option value="comfort">وضع القراءة المريح</option>
+        <option value="night">الوضع الليلي</option>
+      </select>
+    </div>
+  </div>
+  <div class="surah-head"><h2 id="surahName" style="margin:0">سورة</h2><div class="muted" id="surahMeta"></div></div>
+  <div class="card"><div id="readerBox"><div class="empty">جارٍ تحميل السورة من المصدر الموثوق…</div></div></div>
+  <div class="card center">
+    <p class="muted">لا تُسجَّل الصفحة بمجرد فتحها — اضغط الزر عند الانتهاء فعليًا، وستنتقل تلقائيًا للسورة التالية ⏭</p>
+    <a class="btn btn-gold btn-block" id="listenBtn">🎧 استماع لهذه السورة بأصوات الشيوخ</a>
+    <div style="height:8px"></div>
+    <button class="btn btn-primary btn-block" id="finishBtn">✓ أنهيت القراءة</button>
+    <div style="height:8px"></div>
+    <div style="display:flex;gap:8px">
+      <a class="btn btn-ghost" style="flex:1" id="prevSurah">السورة السابقة</a>
+      <a class="btn btn-ghost" style="flex:1" id="nextSurah">السورة التالية</a>
+    </div>
+  </div>
+  <p class="muted center">المصدر: Tanzil — الرسم العثماني (alquran.cloud) • يُحفظ للقراءة دون اتصال</p>
+</main>
+<script src="js/storage.js"></script>`n<script src="js/firebase-config.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/app.js"></script>
+<script src="data/quran-data.js"></script>
+<script src="js/quran.js"></script>
+<script src="js/reader.js"></script>
+<script src="js/reading-tracker.js"></script>
+<script>
+(function(){
+  "use strict";
+  var qs=new URLSearchParams(location.search);
+  var n=Math.min(114,Math.max(1,parseInt(qs.get("n"),10)||1));
+  var focusAyah=parseInt(qs.get("ayah"),10)||0;
+  var meta=window.surahMeta(n);
+  var readAyahs={}; // تحديد الآيات كمقروءة (محلي للجلسة)
+  try{readAyahs=JSON.parse(localStorage.getItem("suhbat_quran_readayah_"+n)||"{}");}catch(e){}
+  function saveRead(){try{localStorage.setItem("suhbat_quran_readayah_"+n,JSON.stringify(readAyahs));}catch(e){}}
+
+  function render(data){
+    document.getElementById("surahTitle").textContent="سورة "+meta.name;
+    document.getElementById("surahName").textContent="سورة "+meta.name;
+    document.getElementById("surahMeta").textContent=meta.ayahs+" آيات • "+meta.type+(data.offline?" • (نسخة محفوظة دون اتصال)":"");
+    
+    // فصل البسملة كآية مستقلة للسور التي تبتدئ بها (عدا الفاتحة والتوبة)
+    var ayahs = data.ayahs;
+    var displayAyahs = [];
+    var BISMILLAH = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+    
+    if (n !== 1 && n !== 9 && ayahs.length > 0) {
+      var firstAyah = ayahs[0];
+      if (firstAyah.text.indexOf(BISMILLAH) === 0) {
+        // إضافة البسملة كآية 1
+        displayAyahs.push({ number: 1, text: BISMILLAH, page: firstAyah.page, juz: firstAyah.juz });
+        // باقي الآية 1 يصبح آية 2
+        var rest = firstAyah.text.slice(BISMILLAH.length).trim();
+        if (rest) {
+          displayAyahs.push({ number: 2, text: rest, page: firstAyah.page, juz: firstAyah.juz });
+        }
+        // باقي الآيات تزاح برقم +1
+        for (var i = 1; i < ayahs.length; i++) {
+          displayAyahs.push({ number: ayahs[i].number + 1, text: ayahs[i].text, page: ayahs[i].page, juz: ayahs[i].juz });
+        }
+      } else {
+        displayAyahs = ayahs;
+      }
+    } else {
+      displayAyahs = ayahs;
+    }
+    
+    var html="";
+    html+=displayAyahs.map(function(a){
+      var fav=Reader.isFav(n,a.number);
+      var rd=readAyahs[a.number];
+      return '<div class="ayah-block'+(rd?' read':'')+'" id="ayah'+a.number+'">'+
+        '<div class="quran-text"><span class="ayah-wording">'+App.esc(a.text)+'</span><span class="ayah-num">'+a.number+'</span></div>'+
+        '<div class="ayah-actions">'+
+        '<button class="chip-btn'+(rd?' on':'')+'" data-act="read" data-a="'+a.number+'">'+(rd?'✓ مقروءة':'تحديد كمقروءة')+'</button>'+
+        '<button class="chip-btn'+(fav?' on':'')+'" data-act="fav" data-a="'+a.number+'">'+(fav?'★':'☆')+'</button>'+
+        '<button class="chip-btn" data-act="copy" data-a="'+a.number+'">📋 نسخ</button>'+
+        '<button class="chip-btn" data-act="share" data-a="'+a.number+'">📤 مشاركة</button>'+
+        '</div></div>';
+    }).join("");
+    var box=document.getElementById("readerBox");
+    box.innerHTML=html;
+    Reader.apply(document);
+    box.querySelectorAll("button").forEach(function(b){
+      b.addEventListener("click",function(){
+        var an=+b.dataset.a;
+        var ay=displayAyahs.find(function(x){return x.number===an;});
+        var fullTxt="﴿"+ay.text+"﴾ — سورة "+meta.name+" (آية "+an+")";
+        if(b.dataset.act==="read"){
+          if(readAyahs[an])delete readAyahs[an];else readAyahs[an]=1;
+          saveRead();render(data);
+        }
+        else if(b.dataset.act==="fav"){Reader.toggleFav(n,meta.name,an,ay.text);render(data);}
+        else if(b.dataset.act==="copy")App.copy(fullTxt);
+        else if(b.dataset.act==="share")App.share("سورة "+meta.name,fullTxt);
+      });
+    });
+    if(focusAyah){
+      var el=document.getElementById("ayah"+focusAyah);
+      if(el)setTimeout(function(){el.scrollIntoView({block:"center"});el.style.background="rgba(201,162,75,.15)";},400);
+    }
+  }
+  document.addEventListener("DOMContentLoaded",function(){
+    Reader.bindControls({onViewMode:function(v){
+      if(v==="mushaf"){location.href="mushaf.html";return;}
+      if(v==="night"){document.body.classList.add("dark");var s=Store.settings();s.theme="dark";Store.saveSettings(s);App.applyTheme();}
+      if(v==="comfort"){var s2=Store.settings();s2.fontSize=Math.max(s2.fontSize||24,26);s2.lineGap=2.4;Store.saveSettings(s2);Reader.apply(document);App.toast("وضع القراءة المريح ✓");}
+    }});
+    ReadingTracker.start(function(sec){document.getElementById("readTimer").textContent=App.fmtDur(sec);});
+    ReadingTracker.trackPos({kind:"surah",surah:n,surahName:meta.name});
+    document.getElementById("listenBtn").href = "listen.html?n=" + n;
+    QuranAPI.fetchSurah(n).then(render).catch(function(){
+      document.getElementById("readerBox").innerHTML='<div class="empty">تعذر تحميل السورة — تحقق من الاتصال ثم أعد المحاولة.<br><br><button class="btn btn-primary" onclick="location.reload()">إعادة المحاولة</button></div>';
+    });
+    document.getElementById("finishBtn").addEventListener("click",function(){
+      var s=ReadingTracker.finish({kind:"surah",surah:n,surahName:meta.name});
+      var btn=document.getElementById("finishBtn");
+      btn.disabled=true;
+      if(n<114){
+        var nm=window.surahMeta(n+1);
+        btn.textContent="تم ✓ — انتقل لسورة "+nm.name+" ⏭";
+        App.toast("تقبل الله ("+App.fmtDur(s.durationSec)+") — انتقل لسورة "+nm.name);
+        setTimeout(function(){location.href="surah.html?n="+(n+1);},1500);
+      }else{
+        btn.textContent="تم تسجيل قراءتك ✓ — ما شاء الله أتممت المصحف";
+        App.toast("ما شاء الله! أتممت سور المصحف كاملة 🤲");
+      }
+    });
+    var pv=document.getElementById("prevSurah"),nx=document.getElementById("nextSurah");
+    if(n>1){pv.href="surah.html?n="+(n-1);}else{pv.style.opacity=.4;pv.removeAttribute("href");}
+    if(n<114){nx.href="surah.html?n="+(n+1);}else{nx.style.opacity=.4;nx.removeAttribute("href");}
+  });
+})();
+</script>
+</body>
+</html>
+
